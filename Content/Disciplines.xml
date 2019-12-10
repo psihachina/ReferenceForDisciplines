@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DisciplineContext xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Discipline>
+    <Name>Структуры данных</Name>
+  </Discipline>
+  <Discipline>
+    <Name>АрхИС</Name>
+  </Discipline>
+  <Discipline>
+    <Name>Управление данными</Name>
+  </Discipline>
+  <Discipline>
+    <Name>Дискретная математика</Name>
+  </Discipline>
+  <Discipline>
+    <Name>Математическая статистика</Name>
+  </Discipline>
+  <Discipline>
+    <Name>Общая теория систем и системный анализ</Name>
+  </Discipline>
+  <Discipline>
+    <Name>Основы теории управления</Name>
+  </Discipline>
+</DisciplineContext>

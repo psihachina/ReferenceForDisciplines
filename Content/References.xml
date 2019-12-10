@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ReferenceContext xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Reference>
+    <Name>Массив</Name>
+    <Disciplines>Структуры данных</Disciplines>
+    <Document>D:\\Project\\ReferenceForDisciplines\\ReferenceForDisciplines\\Content\\Массив.xps</Document>
+    <SeeAlso>
+      <ConnectedTopic>Список</ConnectedTopic>
+    </SeeAlso>
+    <SeeAlso>
+      <ConnectedTopic>Односвязный список</ConnectedTopic>
+    </SeeAlso>
+    <SeeAlso>
+      <ConnectedTopic>Двусвязный список</ConnectedTopic>
+    </SeeAlso>
+  </Reference>
+  <Reference>
+    <Name>Список</Name>
+    <Disciplines>Структуры данных</Disciplines>
+    <Document>D:\\Project\\ReferenceForDisciplines\\ReferenceForDisciplines\\Content\\Список.xps</Document>
+    <SeeAlso>
+      <ConnectedTopic>Массив</ConnectedTopic>
+    </SeeAlso>
+    <SeeAlso>
+      <ConnectedTopic>Односвязный список</ConnectedTopic>
+    </SeeAlso>
+    <SeeAlso>
+      <ConnectedTopic>Двусвязный список</ConnectedTopic>
+    </SeeAlso>
+  </Reference>
+  <Reference>
+    <Name>Что-то</Name>
+    <Disciplines>Математическая логика</Disciplines>
+    <Document>D:\\Project\\ReferenceForDisciplines\\ReferenceForDisciplines\\Content\\Список.xps</Document>
+  </Reference>
+</ReferenceContext>

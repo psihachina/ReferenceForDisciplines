@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="ReferenceForDisciplines.View.AddTopic"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ReferenceForDisciplines.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="250" d:DesignWidth="250">
+    <Grid>
+        <StackPanel Orientation="Vertical" Margin="20">
+            <TextBlock Text="Введите новое название темы" Margin="10 10 10 0" />
+            <TextBox Margin="10" Text="{Binding Name}" />
+            <Button Margin="10 0 10 0" Command="{Binding OpenFile}">Выбрать файл</Button>
+            <TextBox Margin="10" Text="{Binding PathFile}" />
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Добавить" Command="{Binding EditSelectedDiscipline}" Margin="10" />
+                <Button Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="10">Отмена</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
