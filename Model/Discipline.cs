@@ -5,12 +5,12 @@ namespace ReferenceForDisciplines.Model
     [XmlRoot("DisciplineContext")]
     public class Discipline : BaseModelClass
     {
-        private string name;
+        private string _name;
 
         public string Name
         {
-            get => name;
-            set => Set(ref name, value);
+            get => _name;
+            set => Set(ref _name, value);
         }
 
 
@@ -21,7 +21,7 @@ namespace ReferenceForDisciplines.Model
 
         public override bool Equals(object obj)
         {
-            var item = obj as Discipline;
+            Discipline item = obj as Discipline;
             if (item == null) return false;
 
             return item.Name == Name;

@@ -5,11 +5,11 @@ namespace ReferenceForDisciplines.Pattern
 {
     internal class UserCommand : ICommand
     {
-        private readonly Action func;
+        private readonly Action _func;
 
         public UserCommand(Action func)
         {
-            this.func = func;
+            this._func = func;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -21,7 +21,12 @@ namespace ReferenceForDisciplines.Pattern
 
         public void Execute(object parameter)
         {
-            func();
+            _func();
+        }
+
+        protected virtual void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

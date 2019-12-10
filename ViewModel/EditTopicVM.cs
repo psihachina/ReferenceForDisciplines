@@ -7,17 +7,17 @@ using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    internal class EditTopicVM : ViewModelBase
+    internal class EditTopicVm : ViewModelBase
     {
         private string _name;
         private string _pathFile;
         public DialogSession DialogSession;
-        private readonly Reference reference;
+        private readonly Reference _reference;
 
-        public EditTopicVM(IView view, Reference reference) : base(view)
+        public EditTopicVm(IView view, Reference reference) : base(view)
         {
             View.ViewModel = this;
-            this.reference = reference;
+            this._reference = reference;
             View.Show();
             PathFile = reference.Document;
             Name = reference.Name;
@@ -47,10 +47,10 @@ namespace ReferenceForDisciplines.ViewModel
         public ICommand AddDiscipline =>
             new UserCommand(() =>
                 {
-                    BaseOfManager.GetInstance().unitOfWork.References.Update(reference,
+                    BaseOfManager.GetInstance().unitOfWork.References.Update(_reference,
                         new Reference
                         {
-                            Disciplines = reference.Disciplines, Document = PathFile, Edges = reference.Edges,
+                            Disciplines = _reference.Disciplines, Document = PathFile, Edges = _reference.Edges,
                             Name = Name
                         });
                     DialogSession.Close();

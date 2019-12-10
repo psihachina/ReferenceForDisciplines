@@ -50,7 +50,7 @@ namespace ReferenceForDisciplines.ViewModel
                     BaseOfManager.GetInstance().unitOfWork.References.Add(new Reference
                         {Disciplines = discipline.Name, Document = PathFile, Name = Name});
                     DialogSession.Close();
-                    defaultVM.mainVM.SetDefaultUC();
+                    defaultVM.mainVM.SetDefault();
                 }
             );
     }

@@ -14,19 +14,18 @@ using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    internal class BrowsingVM
+    internal class BrowsingVM: ViewModelBase
     {
-        private Browsing _browsingtUC;
         private FixedDocumentSequence _document;
         private Reference _selectedReference;
         private SeeAlso _selectedReferenceEdge;
         private readonly DefaultVM defaultVM;
-        private readonly MainVM mainVM;
+        private readonly MainVm mainVM;
 
-        public BrowsingVM(Browsing model, Reference reference, MainVM mainVM, DefaultVM defaultVM)
+        public BrowsingVM(IView view, Reference reference, MainVm mainVM, DefaultVM defaultVM): base(view)
         {
+            View.ViewModel = this;
             this.defaultVM = defaultVM;
-            _browsingtUC = model;
             SelectedReference = reference;
             this.mainVM = mainVM;
         }
@@ -63,11 +62,10 @@ namespace ReferenceForDisciplines.ViewModel
         }
 
         public ICommand Back =>
-            new UserCommand(async () =>
+            new UserCommand(() =>
                 {
                     var defaultUC = new Default();
-                    var defaultUCVM = new DefaultVM(defaultUC, mainVM);
-                    defaultUCVM.ReferencesList = mainVM.ReferencesList;
+                    var defaultUCVM = new DefaultVM(defaultUC, mainVM) {ReferencesList = mainVM.ReferencesList};
                     defaultUCVM.ReferencesList = new ObservableCollection<Reference>(BaseOfManager.GetInstance()
                         .unitOfWork.References.Get().Where(x => x.Disciplines == mainVM.SelectedDiscipline.Name));
                     defaultUC.DataContext = defaultUCVM;
@@ -92,25 +90,5 @@ namespace ReferenceForDisciplines.ViewModel
                         new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
                 }
             );
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual bool Set<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            NotifyPropertyChanged(propertyName);
-            return true;
-        }
-
-        public void SetEgdeReference()
-        {
-            SelectedReference = BaseOfManager.GetInstance().unitOfWork.FindTopic(SelectedReferenceEdge.ConnectedTopic);
-        }
     }
 }

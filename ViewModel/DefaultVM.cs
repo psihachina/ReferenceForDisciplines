@@ -1,25 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
 using ReferenceForDisciplines.Model;
 using ReferenceForDisciplines.Pattern;
 using ReferenceForDisciplines.View;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 
 namespace ReferenceForDisciplines.ViewModel
 {
     public class DefaultVM : ViewModelBase
     {
-        private Default _defaultUC;
-
         private ObservableCollection<Reference> _referencesList = new ObservableCollection<Reference>();
         private Reference _selectedReference;
-        public MainVM mainVM;
+        public MainVm mainVM;
 
-        public DefaultVM(IView view, MainVM mainVM) : base(view)
+        public DefaultVM(IView view, MainVm mainVM) : base(view)
         {
             View.ViewModel = this;
             this.mainVM = mainVM;
@@ -56,7 +51,7 @@ namespace ReferenceForDisciplines.ViewModel
         public ICommand OpenEditTopic =>
             new UserCommand(() =>
                 {
-                    var viewModel = new EditTopicVM(new EditTopic(), SelectedReference);
+                    var viewModel = new EditTopicVm(new EditTopic(), SelectedReference);
                     object dialogResult = DialogHost.Show(viewModel.View,
                         new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
                 }
@@ -65,7 +60,7 @@ namespace ReferenceForDisciplines.ViewModel
         public ICommand OpenDeleteTopic =>
             new UserCommand(() =>
                 {
-                    var viewModel = new DeleteTopicVM(new DeleteTopic(), SelectedReference, ReferencesList);
+                    var viewModel = new DeleteTopicVm(new DeleteTopic(), SelectedReference, ReferencesList);
                     object dialogResult = DialogHost.Show(viewModel.View,
                         new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
                 }
@@ -74,25 +69,11 @@ namespace ReferenceForDisciplines.ViewModel
         public void OpenBrowsing()
         {
             var browsing = new Browsing();
-            var browsingUCVM = new BrowsingVM(browsing, SelectedReference, mainVM, this);
-            browsingUCVM.SelectedReference = _selectedReference;
-            browsing.DataContext = browsingUCVM;
+            new BrowsingVM(new Browsing(), SelectedReference, mainVM, this)
+            {
+                SelectedReference = _selectedReference
+            };
             mainVM.ContentWindow = browsing;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual bool Set<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            NotifyPropertyChanged(propertyName);
-            return true;
         }
     }
 }

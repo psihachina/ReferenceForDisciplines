@@ -9,7 +9,7 @@ using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    public class MainVM : ViewModelBase
+    public class MainVm : ViewModelBase
     {
         private UserControl _content;
         private ObservableCollection<Discipline> _disciplinesList = new ObservableCollection<Discipline>();
@@ -17,7 +17,7 @@ namespace ReferenceForDisciplines.ViewModel
         private Discipline _selectedDiscipline;
         private Reference _selectedReference;
 
-        public MainVM(IView view) : base(view)
+        public MainVm(IView view) : base(view)
         {
             View.ViewModel = this;
             View.Show();
@@ -77,40 +77,25 @@ namespace ReferenceForDisciplines.ViewModel
         public ICommand OnShowAddDialog =>
             new UserCommand(() =>
                 {
-                    var viewModel = new AddDisciplineVM(new AddDiscipline(), this);
-                    object dialogResult = DialogHost.Show(viewModel,
+                    var viewModel = new AddDisciplineVm(new AddDiscipline(), this);
+                    DialogHost.Show(viewModel.View,
                         new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
                 }
             );
 
-        public ICommand DeleteSelectedDiscipline =>
-            new UserCommand(() =>
-                {
-                    DeleteSelectedDisc();
-                    DialogHost.CloseDialogCommand.Execute(null, null);
-                }
-            );
+        
 
-        public string newname { get; set; }
+        public string Newname { get; set; }
 
         public ICommand EditSelectedDiscipline =>
             new UserCommand(() =>
                 {
                     BaseOfManager.GetInstance().unitOfWork.Disciplines
-                        .Update(SelectedDiscipline, new Discipline {Name = newname});
-                    newname = "";
+                        .Update(SelectedDiscipline, new Discipline {Name = Newname});
+                    Newname = "";
                     DialogHost.CloseDialogCommand.Execute(null, null);
                     View.GetListView().UnselectAll();
                     SelectedDiscipline = null;
-                }
-            );
-
-        public ICommand AddNewDiscipline =>
-            new UserCommand(() =>
-                {
-                    DialogHost.CloseDialogCommand.Execute(null, null);
-                    BaseOfManager.GetInstance().unitOfWork.Disciplines.Add(new Discipline {Name = newname});
-                    newname = "";
                 }
             );
 
@@ -128,41 +113,30 @@ namespace ReferenceForDisciplines.ViewModel
 
         public void ChangeReferencesList()
         {
-            SetDefaultUC();
+            SetDefault();
         }
 
-        public void SetDefaultUC()
+        public void SetDefault()
         {
             ReferencesList = BaseOfManager.GetInstance().unitOfWork.References.Get();
-            var defaultUC = new Default();
-            var defaultUCVM = new DefaultVM(defaultUC, this);
-            defaultUC.DataContext = defaultUCVM;
-            ContentWindow = defaultUC;
+            var defaultUc = new Default();
+            var defaultVm = new DefaultVM(defaultUc, this);
+            defaultUc.DataContext = defaultVm;
+            ContentWindow = defaultUc;
         }
 
         public void OnShowDialogDelete()
         {
-            var viewModel = new DeleteDisciplineVM(new DeleteDialog(), this);
-            DialogHost.Show(new DeleteDialog(),
+            var viewModel = new DeleteDisciplineVm(new DeleteDialog(), this);
+            DialogHost.Show(viewModel.View,
                 new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
         }
 
         public void OnShowDialogEdit()
         {
             var viewModel = new EditDisciplineVM(new EditDialog());
-            object dialogResult = DialogHost.Show(new EditDialog(),
+            DialogHost.Show(new EditDialog(),
                 new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
-        }
-
-        public void DeleteSelectedDisc()
-        {
-            BaseOfManager.GetInstance().unitOfWork.Disciplines.Remove(SelectedDiscipline);
-            SelectedDiscipline = DisciplinesList[0];
-        }
-
-        public void UpdateSelectedDiscipline()
-        {
-            NotifyPropertyChanged(Convert.ToString(_selectedDiscipline));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ReferenceForDisciplines
     {
         public App()
         {
-            new MainVM(new MainWindow());
+            new MainVm(new MainWindow());
         }
     }
 }

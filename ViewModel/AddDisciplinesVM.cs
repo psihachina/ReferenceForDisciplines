@@ -1,20 +1,35 @@
-﻿using MaterialDesignThemes.Wpf;
-using ReferenceForDisciplines.ViewModel;
+﻿using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
+using ReferenceForDisciplines.Model;
+using ReferenceForDisciplines.Pattern;
+using ReferenceForDisciplines.View;
 
-namespace ReferenceForDisciplines.View
+namespace ReferenceForDisciplines.ViewModel
 {
-    internal class AddDisciplineVM
+    internal class AddDisciplineVm: ViewModelBase
     {
-        private readonly AddDiscipline addDialog;
-        private MainVM mainVM;
+        private string _newName;
 
-        public AddDisciplineVM(AddDiscipline model, MainVM mainVM)
+        public DialogSession DialogSession;
+        public string NewName
         {
-            addDialog = model;
-            addDialog.DataContext = this;
-            this.mainVM = mainVM;
+            get => _newName;
+            set => Set(ref _newName, value);
+        }
+        public MainVm Vm { get; }
+
+        public AddDisciplineVm(IView view, MainVm mainVm): base(view)
+        {
+            View.ViewModel = this;
+            this.Vm = mainVm;
         }
 
-        public DialogSession DialogSession { get; set; }
+        public ICommand AddNewDiscipline =>
+            new UserCommand(() =>
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                    BaseOfManager.GetInstance().unitOfWork.Disciplines.Add(new Discipline {Name = NewName});
+                }
+            );
     }
 }

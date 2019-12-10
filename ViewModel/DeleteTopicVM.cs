@@ -7,24 +7,24 @@ using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    internal class DeleteTopicVM : ViewModelBase
+    internal class DeleteTopicVm : ViewModelBase
     {
         public DialogSession DialogSession;
-        private readonly Reference reference;
-        private readonly ObservableCollection<Reference> references;
+        private readonly Reference _reference;
+        private readonly ObservableCollection<Reference> _references;
 
-        public DeleteTopicVM(IView view, Reference reference, ObservableCollection<Reference> references) : base(view)
+        public DeleteTopicVm(IView view, Reference reference, ObservableCollection<Reference> references) : base(view)
         {
             View.ViewModel = this;
-            this.reference = reference;
-            this.references = references;
+            this._reference = reference;
+            this._references = references;
             View.Show();
         }
 
         public ICommand Delete =>
-            new UserCommand(async () =>
+            new UserCommand(() =>
                 {
-                    references.Remove(reference);
+                    _references.Remove(_reference);
                     DialogSession.Close();
                 }
             );
