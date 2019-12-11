@@ -9,7 +9,7 @@ namespace ReferenceForDisciplines.Pattern
 
         public UserCommand(Action func)
         {
-            this._func = func;
+            _func = func;
         }
 
         public event EventHandler CanExecuteChanged;

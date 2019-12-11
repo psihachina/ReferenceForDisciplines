@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
+using ReferenceForDisciplines.Model;
+using ReferenceForDisciplines.Pattern;
 using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    internal class EditDisciplineVM
+    internal class EditDisciplineVm : ViewModelBase
     {
         private string _newName;
-        private EditDialog editDialog;
 
+        public MainVm Vm;
 
-        public EditDisciplineVM(EditDialog model)
+        public EditDisciplineVm(IView view, MainVm vm) : base(view)
         {
-            editDialog = model;
+            View.ViewModel = this;
+            Vm = vm;
+            _newName = Vm.SelectedDiscipline.Name;
         }
 
         public DialogSession DialogSession { get; set; }
@@ -26,20 +28,14 @@ namespace ReferenceForDisciplines.ViewModel
             set => Set(ref _newName, value);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual bool Set<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            //вызываем событие, уведомляем все подписчиков об изменении свойства
-            NotifyPropertyChanged(propertyName);
-            return true;
-        }
+        public ICommand EditSelectedDiscipline =>
+            new UserCommand(() =>
+                {
+                    BaseOfManager.GetInstance().unitOfWork.Disciplines
+                        .Update(Vm.SelectedDiscipline, new Discipline {Name = NewName});
+                    NewName = "";
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                }
+            );
     }
 }

@@ -9,15 +9,15 @@ namespace ReferenceForDisciplines.ViewModel
 {
     internal class DeleteTopicVm : ViewModelBase
     {
-        public DialogSession DialogSession;
         private readonly Reference _reference;
         private readonly ObservableCollection<Reference> _references;
+        public DialogSession DialogSession;
 
         public DeleteTopicVm(IView view, Reference reference, ObservableCollection<Reference> references) : base(view)
         {
             View.ViewModel = this;
-            this._reference = reference;
-            this._references = references;
+            _reference = reference;
+            _references = references;
             View.Show();
         }
 

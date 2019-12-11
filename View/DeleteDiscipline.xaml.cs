@@ -21,7 +21,6 @@ namespace ReferenceForDisciplines.View
 
         public void Close()
         {
-
         }
 
         public ListView GetListView()
@@ -31,7 +30,6 @@ namespace ReferenceForDisciplines.View
 
         public void Show()
         {
-
         }
     }
 }

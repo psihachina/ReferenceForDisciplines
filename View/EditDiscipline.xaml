@@ -3,16 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:ReferenceForDisciplines.ViewModel"
-
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="250">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="20">
             <TextBlock Text="Введите новое название дисциплины" Margin="10" />
-            <TextBox Margin="10" Text="{Binding newname}" />
+            <TextBox Margin="10" Text="{Binding NewName}" />
             <StackPanel Orientation="Horizontal">
                 <Button Content="Изменить" Command="{Binding EditSelectedDiscipline}" Margin="10" />
                 <Button Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="10">Отмена</Button>

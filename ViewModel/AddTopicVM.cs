@@ -7,19 +7,19 @@ using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    internal class AddTopicVM : ViewModelBase
+    internal class AddTopicVm : ViewModelBase
     {
+        private readonly DefaultVm _defaultVm;
+        private readonly Discipline _discipline;
         private string _name;
         private string _pathFile;
-        private readonly DefaultVM defaultVM;
         public DialogSession DialogSession;
-        private readonly Discipline discipline;
 
-        public AddTopicVM(IView view, Discipline discipline, DefaultVM defaultVM) : base(view)
+        public AddTopicVm(IView view, Discipline discipline, DefaultVm defaultVm) : base(view)
         {
             View.ViewModel = this;
-            this.defaultVM = defaultVM;
-            this.discipline = discipline;
+            _defaultVm = defaultVm;
+            _discipline = discipline;
             View.Show();
         }
 
@@ -44,13 +44,13 @@ namespace ReferenceForDisciplines.ViewModel
                 }
             );
 
-        public ICommand AddSelectedDiscipline =>
+        public ICommand AddTopic =>
             new UserCommand(() =>
                 {
                     BaseOfManager.GetInstance().unitOfWork.References.Add(new Reference
-                        {Disciplines = discipline.Name, Document = PathFile, Name = Name});
+                        {Disciplines = _discipline.Name, Document = PathFile, Name = Name});
                     DialogSession.Close();
-                    defaultVM.mainVM.SetDefault();
+                    _defaultVm.MainVm.SetDefault();
                 }
             );
     }

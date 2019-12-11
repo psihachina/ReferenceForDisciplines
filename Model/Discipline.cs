@@ -21,7 +21,7 @@ namespace ReferenceForDisciplines.Model
 
         public override bool Equals(object obj)
         {
-            Discipline item = obj as Discipline;
+            var item = obj as Discipline;
             if (item == null) return false;
 
             return item.Name == Name;

@@ -3,9 +3,6 @@ using ReferenceForDisciplines.ViewModel;
 
 namespace ReferenceForDisciplines.View
 {
-    /// <summary>
-    ///     Логика взаимодействия для UserControl1.xaml
-    /// </summary>
     public partial class Default : UserControl, IView
     {
         public Default()

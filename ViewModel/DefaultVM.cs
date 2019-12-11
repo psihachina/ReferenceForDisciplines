@@ -1,26 +1,26 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using ReferenceForDisciplines.Model;
 using ReferenceForDisciplines.Pattern;
 using ReferenceForDisciplines.View;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    public class DefaultVM : ViewModelBase
+    public class DefaultVm : ViewModelBase
     {
         private ObservableCollection<Reference> _referencesList = new ObservableCollection<Reference>();
         private Reference _selectedReference;
-        public MainVm mainVM;
+        public MainVm MainVm;
 
-        public DefaultVM(IView view, MainVm mainVM) : base(view)
+        public DefaultVm(IView view, MainVm mainVm) : base(view)
         {
             View.ViewModel = this;
-            this.mainVM = mainVM;
-            if (mainVM.SelectedDiscipline != null)
+            MainVm = mainVm;
+            if (mainVm.SelectedDiscipline != null)
                 _referencesList = new ObservableCollection<Reference>(BaseOfManager.GetInstance().unitOfWork.References
-                    .Get().Where(x => x.Disciplines == mainVM.SelectedDiscipline.Name));
+                    .Get().Where(x => x.Disciplines == mainVm.SelectedDiscipline.Name));
         }
 
         public ObservableCollection<Reference> ReferencesList
@@ -32,18 +32,14 @@ namespace ReferenceForDisciplines.ViewModel
         public Reference SelectedReference
         {
             get => _selectedReference;
-            set
-            {
-                if (Set(ref _selectedReference, value))
-                    OpenBrowsing();
-            }
+            set => Set(ref _selectedReference, value);
         }
 
         public ICommand OpenAddTopic =>
             new UserCommand(() =>
                 {
-                    var viewModel = new AddTopicVM(new EditTopic(), mainVM.SelectedDiscipline, this);
-                    object dialogResult = DialogHost.Show(viewModel.View,
+                    var viewModel = new AddTopicVm(new AddTopic(), MainVm.SelectedDiscipline, this);
+                    DialogHost.Show(viewModel.View,
                         new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
                 }
             );
@@ -52,7 +48,7 @@ namespace ReferenceForDisciplines.ViewModel
             new UserCommand(() =>
                 {
                     var viewModel = new EditTopicVm(new EditTopic(), SelectedReference);
-                    object dialogResult = DialogHost.Show(viewModel.View,
+                    DialogHost.Show(viewModel.View,
                         new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
                 }
             );
@@ -66,14 +62,18 @@ namespace ReferenceForDisciplines.ViewModel
                 }
             );
 
-        public void OpenBrowsing()
+        public ICommand OpenBrowsing =>
+            new UserCommand(() => { OnOpenBrowsing(); }
+            );
+
+        public void OnOpenBrowsing()
         {
             var browsing = new Browsing();
-            new BrowsingVM(new Browsing(), SelectedReference, mainVM, this)
+            browsing.DataContext = new BrowsingVM(browsing, SelectedReference, MainVm, this)
             {
                 SelectedReference = _selectedReference
             };
-            mainVM.ContentWindow = browsing;
+            MainVm.ContentWindow = browsing;
         }
     }
 }

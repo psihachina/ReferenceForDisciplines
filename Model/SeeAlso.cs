@@ -3,22 +3,15 @@
 namespace ReferenceForDisciplines.Model
 {
     [XmlRoot("ReferenceContext")]
-    public class SeeAlso
+    public class SeeAlso : BaseModelClass
     {
-        /// <summary>
-        ///     Связанная тема
-        /// </summary>
+        private string _connectedTopic;
 
-        public string ConnectedTopic { get; set; }
 
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="connectedTopic">Связанная тема</param>
-
-        //public SeeAlso(string connectedTopic)
-        //{
-        //    ConnectedTopic = connectedTopic;
-        //}
+        public string ConnectedTopic
+        {
+            get => _connectedTopic;
+            set => Set(ref _connectedTopic, value);
+        }
     }
 }

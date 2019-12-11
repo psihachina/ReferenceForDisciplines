@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Xps.Packaging;
@@ -14,15 +11,15 @@ using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    internal class BrowsingVM: ViewModelBase
+    internal class BrowsingVM : ViewModelBase
     {
+        private readonly DefaultVm defaultVM;
+        private readonly MainVm mainVM;
         private FixedDocumentSequence _document;
         private Reference _selectedReference;
         private SeeAlso _selectedReferenceEdge;
-        private readonly DefaultVM defaultVM;
-        private readonly MainVm mainVM;
 
-        public BrowsingVM(IView view, Reference reference, MainVm mainVM, DefaultVM defaultVM): base(view)
+        public BrowsingVM(IView view, Reference reference, MainVm mainVM, DefaultVm defaultVM) : base(view)
         {
             View.ViewModel = this;
             this.defaultVM = defaultVM;
@@ -43,16 +40,7 @@ namespace ReferenceForDisciplines.ViewModel
         public SeeAlso SelectedReferenceEdge
         {
             get => _selectedReferenceEdge;
-            set
-            {
-                if (value != null)
-                    if (Set(ref _selectedReferenceEdge, value))
-                    {
-                        defaultVM.SelectedReference = BaseOfManager.GetInstance().unitOfWork
-                            .FindTopic(_selectedReferenceEdge.ConnectedTopic);
-                        defaultVM.OpenBrowsing();
-                    }
-            }
+            set => Set(ref _selectedReferenceEdge, value);
         }
 
         public FixedDocumentSequence Document
@@ -64,12 +52,12 @@ namespace ReferenceForDisciplines.ViewModel
         public ICommand Back =>
             new UserCommand(() =>
                 {
-                    var defaultUC = new Default();
-                    var defaultUCVM = new DefaultVM(defaultUC, mainVM) {ReferencesList = mainVM.ReferencesList};
-                    defaultUCVM.ReferencesList = new ObservableCollection<Reference>(BaseOfManager.GetInstance()
+                    var defaultUc = new Default();
+                    var defaultVm = new DefaultVm(defaultUc, mainVM) {ReferencesList = mainVM.ReferencesList};
+                    defaultVm.ReferencesList = new ObservableCollection<Reference>(BaseOfManager.GetInstance()
                         .unitOfWork.References.Get().Where(x => x.Disciplines == mainVM.SelectedDiscipline.Name));
-                    defaultUC.DataContext = defaultUCVM;
-                    mainVM.ContentWindow = defaultUC;
+                    defaultUc.DataContext = defaultVm;
+                    mainVM.ContentWindow = defaultUc;
                 }
             );
 
@@ -77,7 +65,7 @@ namespace ReferenceForDisciplines.ViewModel
             new UserCommand(() =>
                 {
                     var viewModel = new AddSeeAlsoVM(new AddSeeAlso(), SelectedReference);
-                    object dialogResult = DialogHost.Show(viewModel.View,
+                    DialogHost.Show(viewModel.View,
                         new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
                 }
             );
@@ -86,9 +74,29 @@ namespace ReferenceForDisciplines.ViewModel
             new UserCommand(() =>
                 {
                     var viewModel = new EditSeeAlsoVM(new EditSeeAlso(), SelectedReference, SelectedReferenceEdge);
-                    object dialogResult = DialogHost.Show(viewModel.View,
+                    DialogHost.Show(viewModel.View,
                         new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
                 }
             );
+
+        public ICommand OpenDeleteSeeAlso =>
+            new UserCommand(() =>
+                {
+                    var viewModel = new DeleteSeeAlsoVm(new DeleteSeeAlso(), SelectedReferenceEdge, SelectedReference);
+                    DialogHost.Show(viewModel.View,
+                        new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
+                }
+            );
+
+        public ICommand Change =>
+            new UserCommand(() => { ChangeSelectedEdge(); }
+            );
+
+        private void ChangeSelectedEdge()
+        {
+            defaultVM.SelectedReference = BaseOfManager.GetInstance().unitOfWork
+                .FindTopic(_selectedReferenceEdge.ConnectedTopic);
+            defaultVM.OnOpenBrowsing();
+        }
     }
 }

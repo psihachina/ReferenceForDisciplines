@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using ReferenceForDisciplines.ViewModel;
 
 namespace ReferenceForDisciplines.View
@@ -12,6 +13,7 @@ namespace ReferenceForDisciplines.View
         {
             InitializeComponent();
         }
+
         public IViewModel ViewModel
         {
             get => DataContext as IViewModel;
@@ -20,17 +22,17 @@ namespace ReferenceForDisciplines.View
 
         public void Close()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public ListView GetListView()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Show()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

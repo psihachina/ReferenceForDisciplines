@@ -8,22 +8,21 @@ namespace ReferenceForDisciplines.ViewModel
 {
     internal class DeleteSeeAlsoVm : ViewModelBase
     {
-        public DialogSession DialogSession = null;
-        private readonly SeeAlso _seeAlso;
         private readonly Reference _reference;
+        private readonly SeeAlso _seeAlso;
+        public DialogSession DialogSession = null;
 
         public DeleteSeeAlsoVm(IView view, SeeAlso seeAlso, Reference reference) : base(view)
         {
             View.ViewModel = this;
-            this._seeAlso = seeAlso;
-            this._reference = reference;
+            _seeAlso = seeAlso;
+            _reference = reference;
             View.Show();
         }
 
         public ICommand Delete =>
             new UserCommand(() =>
-                {   
-                    
+                {
                     var value = _reference;
                     _reference.Edges.Remove(_seeAlso);
                     BaseOfManager.GetInstance().unitOfWork.References.Update(value, _reference);

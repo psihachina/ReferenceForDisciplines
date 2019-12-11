@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
@@ -83,21 +82,9 @@ namespace ReferenceForDisciplines.ViewModel
                 }
             );
 
-        
 
         public string Newname { get; set; }
 
-        public ICommand EditSelectedDiscipline =>
-            new UserCommand(() =>
-                {
-                    BaseOfManager.GetInstance().unitOfWork.Disciplines
-                        .Update(SelectedDiscipline, new Discipline {Name = Newname});
-                    Newname = "";
-                    DialogHost.CloseDialogCommand.Execute(null, null);
-                    View.GetListView().UnselectAll();
-                    SelectedDiscipline = null;
-                }
-            );
 
         public ICommand Close =>
             new UserCommand(() => { View.Close(); }
@@ -120,7 +107,7 @@ namespace ReferenceForDisciplines.ViewModel
         {
             ReferencesList = BaseOfManager.GetInstance().unitOfWork.References.Get();
             var defaultUc = new Default();
-            var defaultVm = new DefaultVM(defaultUc, this);
+            var defaultVm = new DefaultVm(defaultUc, this);
             defaultUc.DataContext = defaultVm;
             ContentWindow = defaultUc;
         }
@@ -134,8 +121,8 @@ namespace ReferenceForDisciplines.ViewModel
 
         public void OnShowDialogEdit()
         {
-            var viewModel = new EditDisciplineVM(new EditDialog());
-            DialogHost.Show(new EditDialog(),
+            var viewModel = new EditDisciplineVm(new EditDialog(), this);
+            DialogHost.Show(viewModel.View,
                 new DialogOpenedEventHandler((sender, args) => { viewModel.DialogSession = args.Session; }));
         }
     }

@@ -8,11 +8,10 @@ namespace ReferenceForDisciplines.ViewModel
 {
     internal class EditSeeAlsoVM : ViewModelBase
     {
-        private string _name;
-        public DialogSession DialogSession;
-
         private readonly Reference reference;
         private readonly SeeAlso seeAlso;
+        private string _name;
+        public DialogSession DialogSession;
 
         public EditSeeAlsoVM(IView view, Reference reference, SeeAlso seeAlso) : base(view)
         {
@@ -36,7 +35,9 @@ namespace ReferenceForDisciplines.ViewModel
                     BaseOfManager.GetInstance().unitOfWork.References.Update(reference,
                         new Reference
                         {
-                            Disciplines = reference.Disciplines, Document = reference.Document, Edges = reference.Edges,
+                            Disciplines = reference.Disciplines,
+                            Document = reference.Document,
+                            Edges = reference.Edges,
                             Name = reference.Name
                         });
                     DialogSession.Close();

@@ -5,16 +5,15 @@ using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    internal class DeleteDisciplineVm: ViewModelBase
+    internal class DeleteDisciplineVm : ViewModelBase
     {
-        private readonly DeleteDialog deleteDialog;
-        public MainVm Vm { get; }
-
-        public DeleteDisciplineVm(IView view, MainVm mainVM): base(view)
+        public DeleteDisciplineVm(IView view, MainVm mainVm) : base(view)
         {
             View.ViewModel = this;
-            this.Vm = mainVM;
+            Vm = mainVm;
         }
+
+        public MainVm Vm { get; }
 
         public ICommand DeleteSelectedDiscipline =>
             new UserCommand(() =>

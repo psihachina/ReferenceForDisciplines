@@ -6,23 +6,25 @@ using ReferenceForDisciplines.View;
 
 namespace ReferenceForDisciplines.ViewModel
 {
-    internal class AddDisciplineVm: ViewModelBase
+    internal class AddDisciplineVm : ViewModelBase
     {
         private string _newName;
 
         public DialogSession DialogSession;
+
+        public AddDisciplineVm(IView view, MainVm mainVm) : base(view)
+        {
+            View.ViewModel = this;
+            Vm = mainVm;
+        }
+
         public string NewName
         {
             get => _newName;
             set => Set(ref _newName, value);
         }
-        public MainVm Vm { get; }
 
-        public AddDisciplineVm(IView view, MainVm mainVm): base(view)
-        {
-            View.ViewModel = this;
-            this.Vm = mainVm;
-        }
+        public MainVm Vm { get; }
 
         public ICommand AddNewDiscipline =>
             new UserCommand(() =>

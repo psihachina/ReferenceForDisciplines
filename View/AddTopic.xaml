@@ -14,7 +14,7 @@
             <Button Margin="10 0 10 0" Command="{Binding OpenFile}">Выбрать файл</Button>
             <TextBox Margin="10" Text="{Binding PathFile}" />
             <StackPanel Orientation="Horizontal">
-                <Button Content="Добавить" Command="{Binding EditSelectedDiscipline}" Margin="10" />
+                <Button Content="Добавить" Command="{Binding AddTopic}" Margin="10" />
                 <Button Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="10">Отмена</Button>
             </StackPanel>
         </StackPanel>
